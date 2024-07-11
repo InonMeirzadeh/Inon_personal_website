@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ name }}'s Personal Website</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+
+<header class="bg-dark text-white text-center py-5 parallax-header" role="banner">
+        <h1 class="animate__animated animate__fadeInDown">{{ name }}</h1>
+        <p class="lead animate__animated animate__fadeInUp typing-animation">{{ title }}</p>
+        <label for="theme-switcher" class="theme-switch">
+            <input type="checkbox" id="theme-switcher" aria-label="Toggle dark mode">
+            <span class="slider round"></span>
+            <span class="label-text">Dark Mode</span>
+        </label>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" role="navigation" aria-label="Main navigation">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="#about-me" aria-label="About section">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#skills" aria-label="Skills section">Skills</a></li>
+                <li class="nav-item"><a class="nav-link" href="#experience" aria-label="Experience section">Experience</a></li>
+                <li class="nav-item"><a class="nav-link" href="#education" aria-label="Education section">Education</a></li>
+                <li class="nav-item"><a class="nav-link" href="#projects" aria-label="Projects section">Projects</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact" aria-label="Contact section">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    <main class="container my-5" role="main">
+
+        <section id="about-me" class="my-5 animate-on-scroll" aria-labelledby="about-heading">
+            <h2 id="about-heading">About Me</h2>
+            <p>{{ about }}</p>
+        </section>
+
+        <section id="skills" class="my-5 animate-on-scroll" aria-labelledby="skills-heading">
+            <h2 id="skills-heading">Skills</h2>
+            <div class="row">
+                {% for skill in skills %}
+                <div class="col-md-3">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <p class="card-text">{{ skill }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="experience" class="my-5 animate-on-scroll">
+            <h2>Experience</h2>
+            <ul class="timeline">
+                {% for job in experience %}
+                <li class="timeline-item">
+                    <div class="timeline-content">
+                        <h5>{{ job.title }}</h5>
+                        <p>{{ job.company }} ({{ job.dates }})</p>
+                        <p>{{ job.description }}</p>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section id="education" class="my-5 animate-on-scroll">
+            <h2>Education</h2>
+            <ul class="list-group">
+                {% for edu in education %}
+                <li class="list-group-item">
+                    <h5>{{ edu.degree }}</h5>
+                    <p>{{ edu.institution }} ({{ edu.dates }})</p>
+                    <p>{{ edu.description }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+
+        <section id="projects" class="my-5 animate-on-scroll">
+            <h2>Projects</h2>
+            <div class="row">
+                {% for project in projects %}
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ project.name }}</h5>
+                            <p class="card-text">{{ project.short_description }}</p>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#projectModal{{ loop.index }}">Learn More</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="gallery" class="my-5 animate-on-scroll">
+            <h2>Gallery</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-4 gallery-item">
+                    <img src="{{ url_for('static', filename='images/degree.jpg') }}" class="img-fluid mb-3 lazy-load" alt="Image 1" data-src="{{ url_for('static', filename='images/degree.jpg') }}">
+                </div>
+                <div class="col-md-4 gallery-item">
+                    <img src="{{ url_for('static', filename='images/inon_pic.jpg') }}" class="img-fluid mb-3 lazy-load" alt="Image 2" data-src="{{ url_for('static', filename='images/inon_pic.jpg') }}">
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="my-5 animate-on-scroll">
+            <h2>Contact</h2>
+            <p>Phone: {{ contact.phone }}</p>
+            <p>Email: {{ contact.email }}</p>
+            <p>LinkedIn: <a href="{{ contact.linkedin }}" target="_blank">Inon Meirzadeh</a></p>
+            <p>GitHub: <a href="{{ contact.github1 }}" target="_blank">ArcadeLearner</a>, <a href="{{ contact.github2 }}" target="_blank">WebCourse</a></p>
+        </section>
+    </main>
+
+    <footer class="bg-dark text-white text-center py-3">
+        <p>&copy; 2024 Inon Meirzadeh</p>
+    </footer>
+
+    {% for project in projects %}
+    <div class="modal fade" id="projectModal{{ loop.index }}" tabindex="-1" aria-labelledby="projectModalLabel{{ loop.index }}" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="projectModalLabel{{ loop.index }}">{{ project.name }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <b>Description</b>
+                    <p>{{ project.description }}</p>
+
+                    <b>Technologies</b>
+                    <p>{{ project.technologies }}</p>
+
+                    <b>Key Features</b>
+                    <p>{{ project.features }}</p>
+                </div>
+                <div class="modal-footer">
+                    {% if project.github %}
+                    <a href="{{ project.github }}" class="btn btn-primary" target="_blank" rel="noopener noreferrer">GitHub Repo</a>
+                    {% endif %}
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
