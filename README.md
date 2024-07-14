@@ -2,6 +2,8 @@
 
 A personal website built using Python, HTML, CSS, and JavaScript. The website showcases personal and professional information, including skills, experience, education, projects, and contact details. It features modern design elements like smooth scrolling, dark mode, lazy loading of images, and accessibility enhancements.
 
+**[Visit the Website](https://inonmeirzadeh.pythonanywhere.com/)**
+
 ## Features
 
 - Smooth scrolling for anchor links
